@@ -4,11 +4,16 @@ const express     = require('express');
 const bodyParser  = require('body-parser');
 const expect      = require('chai').expect;
 const cors        = require('cors');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
+
+// mongoose.connect(process.env.MONGO_URI)
+// .then(() => console.log('Verbindung zur MongoDB erfolgreich'))
+// .catch(err => console.error('MongoDB-Verbindungsfehler:', err));
 
 let app = express();
 
