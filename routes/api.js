@@ -1,6 +1,28 @@
 'use strict';
 
-let issues = [];
+
+let issues = [
+  { _id: 'dummyId123',
+    issue_title: 'Dummy Issue',
+    issue_text: 'Initial Text',
+    created_by: 'Test User',
+    assigned_to: 'Assignee Name',
+    status_text: 'In Progress',
+    created_on: 'created_on',
+    updated_on: 'updated_on',
+    open: true,
+    project: 'my_project' },
+    { _id: 'dummyId1234',
+    issue_title: 'Dummy Issue',
+    issue_text: 'Initial Text',
+    created_by: 'Test User',
+    assigned_to: 'Assignee Name',
+    status_text: 'In Progress',
+    created_on: 'created_on',
+    updated_on: 'updated_on',
+    open: true,
+    project: 'my_project' }
+];
 
 module.exports = function (app) {
 
@@ -9,24 +31,24 @@ module.exports = function (app) {
     .get(function (req, res) {
       let project = req.params.project;
 
-      console.log(project, '<-name')
+      // console.log(project, '<-name')
       const filters = req.query
-      console.log(filters, '<filters')
+      // console.log(filters, '<filters')
 
       const projectIssues = issues.filter(issue => issue.project === project);
       if (Object.keys(filters).length === 0) {
-        console.log('Keine Filter angegeben, gebe alle Issues zurück:', projectIssues);
+        // console.log('Keine Filter angegeben, gebe alle Issues zurück:', projectIssues);
         return res.json(projectIssues);
       }
       const filteredIssues = projectIssues.filter(issue => {
-        console.log(`Checking issue: ${JSON.stringify(issue)}`);
+        // console.log(`Checking issue: ${JSON.stringify(issue)}`);
 
         for (let key in filters) {
           if (filters[key] !== undefined) {
             const issueValue = issue[key]?.toString().toLowerCase();
             const filterValue = filters[key].toLowerCase();
 
-            console.log(`Checking filter for ${key}: ${issueValue} against ${filterValue}`);
+            // console.log(`Checking filter for ${key}: ${issueValue} against ${filterValue}`);
             if (issueValue !== filterValue) {
               return false;
             }
@@ -34,8 +56,8 @@ module.exports = function (app) {
         }
         return true;
       });
-      console.log(issues)
-      console.log('neues Problem get', filteredIssues)
+      // console.log(issues)
+      // console.log('neues Problem get', filteredIssues)
       res.json(filteredIssues);
     })
 
@@ -67,10 +89,10 @@ module.exports = function (app) {
 
       }
 
-      console.log('neues Problemff', data, '<data, title>', data.issue_title)
-      console.log('Vor dem Push, aktuelles Issues-Array:', issues);
+      // console.log('neues Problemff', data, '<data, title>', data.issue_title)
+      // console.log('Vor dem Push, aktuelles Issues-Array:', issues);
       issues.push(newIssue);
-      console.log('Nach dem Push, aktuelles Issues-Array:', issues);
+      // console.log('Nach dem Push, aktuelles Issues-Array:', issues);
       res.json(newIssue)
     })
 
@@ -83,7 +105,7 @@ module.exports = function (app) {
       if (!_id) {
         return res.json({ error: 'missing _id' })
       }
-      console.log(data, 'update fff')
+      // console.log(data, 'update fff')
 
       const updateFields = { ...data };
       delete updateFields._id;
@@ -91,10 +113,16 @@ module.exports = function (app) {
       if (Object.keys(updateFields).length === 0) {
         return res.json({ error: 'no update field(s) sent', '_id': _id })
       }
+//       console.log(issues);
+//       console.log("Eingehende Daten:", { _id, project });
+// console.log("Vorhandene Daten im Array:", issues);
 
       // Issue mit der angegebenen ID finden
       const issueIndex = issues.findIndex(issue => issue._id === _id && issue.project === project);
       if (issueIndex === -1) {
+        console.log(`issueIndex: ${issueIndex}`);  // Ausgabe des Indexes
+console.log(`issue found: ${issues[issueIndex]}`);  // Ausgabe des gefundenen Issues, falls Index gültig
+
         return res.json({ error: 'could not update', '_id': _id });
       }
 
@@ -126,9 +154,9 @@ module.exports = function (app) {
       }
 
       
-      console.log('issueIndex', issueIndex)
+      // console.log('issueIndex', issueIndex)
       issues.splice(issueIndex,1)
-      console.log(data, 'zum löschen')
+      // console.log(data, 'zum löschen')
 
       res.json({ result: 'successfully deleted', '_id': _id })
     });
