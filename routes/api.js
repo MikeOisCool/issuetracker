@@ -120,8 +120,8 @@ module.exports = function (app) {
       // Issue mit der angegebenen ID finden
       const issueIndex = issues.findIndex(issue => issue._id === _id && issue.project === project);
       if (issueIndex === -1) {
-        console.log(`issueIndex: ${issueIndex}`);  // Ausgabe des Indexes
-console.log(`issue found: ${issues[issueIndex]}`);  // Ausgabe des gefundenen Issues, falls Index gültig
+//         console.log(`issueIndex: ${issueIndex}`);  // Ausgabe des Indexes
+// console.log(`issue found: ${issues[issueIndex]}`);  // Ausgabe des gefundenen Issues, falls Index gültig
 
         return res.json({ error: 'could not update', '_id': _id });
       }
